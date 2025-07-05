@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chúc Mừng Sinh Nhật</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://res.cloudinary.com/duowcdjsg/image/upload/v1751703763/logo_dxy62z.png" type="image/x-icon">
+
+  <style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #ff8488, #f8c5b7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: 'Pacifico', cursive;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .gift {
+        width: 300px;
+        height: 300px;
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+
+    .gift-img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .gift:hover {
+        transform: scale(1.05);
+    }
+
+    .ribbon {
+        position: absolute;
+        background: #fff;
+    }
+
+    .ribbon.vertical {
+        width: 20px;
+        height: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .ribbon.horizontal {
+        height: 20px;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .card {
+        display: block;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        color: white;
+        position: absolute;
+        z-index: 10;
+        font-size: 1.8rem;
+        transform-origin: center;
+        animation: expandFromCenter 3s ease-out forwards;
+        opacity: 0;
+        height: 600px;
+        width: 900px;
+        transform: scale(0);
+        transition: transform 1s ease-out, opacity 0.5s ease-out;
+    }
+
+    .card.show {
+        display: block;
+    }
+
+    .confetti {
+        position: absolute;
+        top: -10px;
+        width: 10px;
+        height: 10px;
+        background-color: yellow;
+        border-radius: 50%;
+        animation: fall 5s infinite;
+    }
+
+    .img-gift {
+        margin: auto;
+        border-radius: 10px;
+        width: 300px;
+        height: 250px;
+        background-image: url(https://res.cloudinary.com/duowcdjsg/image/upload/v1751703763/123_caae1z.gif);
+        background-size: cover;
+        background-position: top center;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    h1 {
+        margin-bottom: 16px;
+    }
+
+    #birthdayText {
+        font-size: 20px;
+        line-height: 2;
+        margin-top: 0px;
+    }
+
+    @keyframes fall {
+        0% { 
+            transform: translateY(0); 
+            opacity: 1; 
+        }
+        100% { 
+            transform: translateY(100vh) rotate(360deg); 
+            opacity: 0; 
+        }
+    }
+
+    @keyframes expandFromCenter {
+        0% {
+            transform: scaleX(0);
+            opacity: 0;
+        }
+        100% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gift" id="giftBox">
+      <img class="gift-img" src="https://res.cloudinary.com/duowcdjsg/image/upload/v1751703763/Pngtree_holiday-gift-gift-box-cartoon_3955354_kktlwb.png" alt="Hộp quà">
+  </div>
+
+  <div class="card hidden" id="message">
+      <h1>🎉 Happy Birthday! 🎂</h1>
+      <p id="birthdayText"></p>
+  </div>    
+
+  <audio id="birthdayMusic" src="https://res.cloudinary.com/duowcdjsg/video/upload/v1751704676/Birthday_w0ga7a.mp3"></audio>
+
+  <script>
+    const giftBox = document.getElementById('giftBox');
+    const message = document.getElementById('message');
+    const birthdayText = document.getElementById("birthdayText");
+    const birthdayMusic = document.getElementById("birthdayMusic");
+
+    const texts = [
+      "Happy Birthday to you 🥳🎉",
+      "Nobody likes you 😎🖕",
+      "You look like a monkey 🎁🙊",
+      "Go back to the zoo ! 👋✨"
+    ];
+
+    giftBox.addEventListener('click', () => {
+        giftBox.style.display = 'none';
+        setTimeout(() => {
+            message.style.display = 'block';
+        
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                confetti.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(confetti);
+            }
+        }, 900);
+        setTimeout( () => {
+          birthdayMusic.play();
+        }, 3000);
+        birthdayMusic.addEventListener("ended", () => {
+          setTimeout(() => {
+            birthdayMusic.src = "https://res.cloudinary.com/duowcdjsg/video/upload/v1751706584/BirthdaySong_hcq6cy.mp3";
+            birthdayMusic.loop = true;
+            birthdayMusic.play();
+          }, 1000);
+        });
+    });
+
+    function typeWriter(texts, element, textIndex = 0, i = 0) {
+        if (textIndex < texts.length) {
+            const text = texts[textIndex];
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                setTimeout(() => typeWriter(texts, element, textIndex, i + 1), 40);
+            } else {
+                setTimeout(() => {
+                    element.innerHTML += '<br>';
+                    typeWriter(texts, element, textIndex + 1);
+                }, 1000);
+            }
+        } else {
+            setTimeout(() => {
+                const imgGift = document.createElement('div');
+                imgGift.classList.add('img-gift');
+                message.appendChild(imgGift);
+            }, 1000);
+        }
+    }
+
+    giftBox.addEventListener("click", () => {
+      message.classList.remove("hidden");
+      message.classList.add("show");
+
+      setTimeout(() => {
+        typeWriter(texts, birthdayText);
+      }, 3500);
+    });
+  </script>
+
+</body>
+</html>
